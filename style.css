@@ -90,6 +90,9 @@ section .title::after{
     padding: 15px 0;
     background: crimson;
 }
+.navbar.sticky a.menu-btn {
+    color: #fff;
+}
 .navbar .max-width{
     display: flex;
     align-items: center;
