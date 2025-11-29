@@ -11,15 +11,15 @@
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #202020;
-            font-family: 'VT323', monospace; /* Global Pixel Font */
-            touch-action: none; /* CRITICAL: Prevent pull-to-refresh/zoom on mobile */
-            user-select: none; /* Prevent text selection */
+            background-color: #3498db; /* Default to water color to avoid black flashes */
+            font-family: 'VT323', monospace; 
+            touch-action: none; 
+            user-select: none; 
             -webkit-user-select: none;
         }
         canvas {
             display: block;
-            image-rendering: pixelated; /* Essential for retro look */
+            image-rendering: pixelated; 
         }
         
         /* UI LAYERS */
@@ -36,7 +36,7 @@
             z-index: 20;
         }
 
-        /* MODAL (Pop-up info) */
+        /* MODAL */
         .modal-container {
             pointer-events: auto;
             background: rgba(10, 10, 15, 0.95);
@@ -45,7 +45,7 @@
             max-width: 650px;
             width: 90%;
             max-height: 80vh;
-            overflow-y: auto; /* Scrollable content */
+            overflow-y: auto; 
             color: #fff;
             padding: 24px;
             position: absolute;
@@ -55,8 +55,8 @@
             display: none;
             animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 100;
-            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
-            font-family: 'VT323', monospace; /* Enforce Pixel Font */
+            -webkit-overflow-scrolling: touch; 
+            font-family: 'VT323', monospace; 
         }
 
         @keyframes popIn {
@@ -64,7 +64,7 @@
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        /* SCANLINE OVERLAY (Retro feel) */
+        /* SCANLINE OVERLAY */
         .scanlines {
             position: fixed;
             top: 0;
@@ -85,17 +85,13 @@
             left: 30px;
             width: 160px;
             height: 160px;
-            display: none; /* Toggled via JS */
+            display: none; /* Hidden by default, shown ONLY in game loop */
             z-index: 50;
             opacity: 0.8;
         }
         
         /* D-Pad visual shapes */
-        .d-pad-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
+        .d-pad-bg { position: absolute; width: 100%; height: 100%; }
         .d-pad-btn {
             position: absolute;
             background: rgba(255, 255, 255, 0.15);
@@ -121,7 +117,7 @@
             background: rgba(255, 50, 50, 0.3);
             border: 4px solid rgba(255,255,255,0.8);
             border-radius: 50%;
-            display: none;
+            display: none; /* Hidden by default */
             justify-content: center;
             align-items: center;
             font-size: 32px;
@@ -154,7 +150,6 @@
             border-radius: 8px;
         }
 
-        /* Modal Internal Styling */
         #modal-content a { color: #60a5fa; text-decoration: none; border-bottom: 1px dashed #60a5fa; }
         #modal-content a:hover { color: #93c5fd; border-bottom: 1px solid #93c5fd; }
         #modal-content ul { list-style-type: none; padding-left: 0; }
@@ -169,7 +164,6 @@
     <canvas id="gameCanvas"></canvas>
 
     <div id="ui-layer">
-        <!-- Notification Bubble -->
         <div id="notification" class="notification pixel-text">Press SPACE to Interact</div>
 
         <!-- Intro Screen -->
@@ -180,7 +174,6 @@
             <div class="bg-gray-900 border-2 border-gray-600 p-6 rounded-lg max-w-md w-full mb-8">
                 <p class="text-2xl text-gray-300 mb-6 pixel-text text-center">Game Developer | AR/VR Expert</p>
                 
-                <!-- Dynamic Instructions inserted by JS -->
                 <div id="controls-hint" class="flex justify-center gap-8 text-gray-400 text-xl pixel-text">
                     <!-- JS will populate this -->
                 </div>
@@ -197,7 +190,6 @@
                 <h2 id="modal-title" class="text-4xl text-yellow-400 pixel-text tracking-wide">Title</h2>
                 <button onclick="closeModal()" class="text-red-500 hover:text-red-400 text-4xl font-bold px-2 pixel-text">X</button>
             </div>
-            <!-- Updated: Removed font-sans, added text-xl for readability of pixel font -->
             <div id="modal-content" class="text-2xl leading-relaxed space-y-4 text-gray-200 pixel-text">
                 <!-- Content injected via JS -->
             </div>
@@ -284,52 +276,37 @@
         }
     }
 
-    // Entities (Interactables)
+    // Entities
     const entities = [
-        // INTRO
         { x: 16, y: 16, type: 'sign', color: '#8B4513', id: 'intro', title: 'Welcome!', content: 'Hi, I\'m <strong>Md. Abul Hasan</strong>.<br><br>I am an innovative Unity Developer with 4+ years of experience in creating multi-platform games, simulations, and AR/VR applications.<br><br>Use the controls to explore the island and interact with objects to see my work!' },
-        
-        // EXPERIENCE (Top Center - The House)
         { x: 14, y: 6, type: 'npc', color: '#4169E1', id: 'exp_singularity', title: 'Singularity Limited', content: '<strong>Experience Engineer</strong><br><em>Jan 2025 - Present</em><br><br>Developing interactive simulations and immersive AR/VR applications for commercial and research projects. Collaborating with cross-functional teams to design, prototype, and deploy real-time 3D experiences.' },
         { x: 18, y: 6, type: 'npc', color: '#8e44ad', id: 'exp_battery', title: 'Battery Low Interactive', content: '<strong>Unity Developer & QA Engineer</strong><br><em>Sep 2021 - Jan 2025</em><br><br>Designed and developed games, simulations, and AR/VR experiences. Transitioned to Lead Gameplay Programmer in 2023, focusing on performance optimization and hardware integration.' },
-
-        // SKILLS (Left Side - The Gardens)
         { x: 6, y: 7, type: 'statue', color: '#7f8c8d', id: 'skill_unity', title: 'Game Development', content: '<strong>Core Engines:</strong> Unity 3D/2D<br><strong>Languages:</strong> C#, C++, Python<br><strong>Key Skills:</strong> Gameplay Programming, Level Design, Optimization, Physics Simulation.' },
         { x: 6, y: 11, type: 'statue', color: '#7f8c8d', id: 'skill_arvr', title: 'AR / VR / MR', content: '<strong>SDKs:</strong> Vuforia, ARFoundation, XR Interaction Toolkit.<br><strong>Expertise:</strong> Immersive experiences, Real-time 3D, sensor integration.' },
         { x: 6, y: 15, type: 'statue', color: '#7f8c8d', id: 'skill_tools', title: 'Tools & Hardware', content: '<strong>Tools:</strong> Blender, Git, JIRA, Visual Studio, Adobe Creative Suite.<br><strong>Hardware:</strong> Arduino Programming, IoT Sensor Integration, Hardware-Software Bridges.' },
-
-        // PROJECTS (Right Side - Treasure Room)
         { x: 26, y: 6, type: 'chest', color: '#FFD700', id: 'proj_visa', title: 'VISA AR Photobooth', content: '<em>July 2025 - Aug 2025</em><br><br>Developed a system that captures photos in real-time, applies multiple AR frames, generates QRs, and allows printing using a Unity and Python bridge.' },
         { x: 26, y: 9, type: 'chest', color: '#FFD700', id: 'proj_harvester', title: 'Harvester Simulator', content: '<em>Aug 2023 - Nov 2024</em><br><br>A physics-based realistic control system for Combined Harvester Operator Training. Built using Unity and Arduino-based hardware integration for a custom controller.' },
         { x: 26, y: 12, type: 'chest', color: '#FFD700', id: 'proj_vr', title: 'VR Sports Simulations', content: '<em>2025 - Present</em><br><br><strong>VR Goalkeeper & VR Cricket:</strong> Immersive sports simulations focusing on realistic physics, VR interaction mechanics, and engaging gameplay loops.' },
         { x: 26, y: 15, type: 'chest', color: '#FFD700', id: 'proj_iot', title: 'Smart Factory (IoT)', content: '<strong>Academic Project</strong><br><br>Designed and implemented a scalable IoT-driven factory model integrating sensors, automation logic, and remote monitoring systems.' },
-
-        // AWARDS (Bottom Left - Hall of Fame)
         { x: 8, y: 18, type: 'trophy', color: '#f1c40f', id: 'award_blockchain', title: 'Intl Blockchain Olympiad', content: '<strong>2021 Award Winner</strong><br><br>Document Authentication Category Winner at the International Blockchain Olympiad 2021.' },
         { x: 10, y: 18, type: 'trophy', color: '#f1c40f', id: 'award_hackathon', title: 'Hackathon Champion', content: '<strong>UAP CSE Carnival 2020</strong><br><br>Champion of the Hardware and Software Carnival Hackathon.' },
-
-        // EDUCATION (Bottom Right - Library)
         { x: 22, y: 18, type: 'sign', color: '#e67e22', id: 'edu_bsc', title: 'Education', content: '<strong>Bachelor of Science in CSE</strong><br>University of Asia Pacific (2016-2021)<br><br><em>Achievements:</em><br>- UAP CSE Hackathon Champion<br>- Blockchain Olympiad Winner' },
-
-        // CONTACT (Bottom Center - The Dock)
         { x: 16, y: 19, type: 'mailbox', color: '#c0392b', id: 'contact', title: 'Contact Me', content: 'Let\'s build the future together!<br><br><strong>Phone:</strong> +8801777148127<br><strong>Email:</strong> shantouap40@gmail.com<br><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/iam-shanto" target="_blank">in/iam-shanto</a><br><strong>GitHub:</strong> <a href="https://github.com/iamshantoo" target="_blank">github.com/iamshantoo</a><br><strong>YouTube:</strong> @gamifyeverything' }
     ];
 
     /**
-     * INITIALIZATION & SETUP
+     * INITIALIZATION
      */
     function init() {
         checkDevice();
         generateMap();
         
-        // Center Spawn
         player.x = 16 * TILE_SIZE;
         player.y = 12 * TILE_SIZE;
 
         resize();
         window.addEventListener('resize', resize);
         
-        // Setup Controls
         setupMobileControls();
         setupDesktopControls();
 
@@ -337,17 +314,14 @@
     }
 
     function checkDevice() {
-        // Robust mobile detection
         isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         
         const hints = document.getElementById('controls-hint');
-        const dpad = document.getElementById('mobile-dpad');
-        const actionBtn = document.getElementById('mobile-action');
         const notif = document.getElementById('notification');
 
+        // Note: We do NOT show the controls here anymore.
+        // We only set the text hints.
         if (isMobile) {
-            dpad.style.display = 'block';
-            actionBtn.style.display = 'flex';
             hints.innerHTML = `
                 <div class="flex flex-col items-center"><span class="text-yellow-400">D-PAD</span><span>Move</span></div>
                 <div class="flex flex-col items-center"><span class="text-yellow-400">A BUTTON</span><span>Interact</span></div>
@@ -365,19 +339,23 @@
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        ctx.imageSmoothingEnabled = false; // Keep pixel art sharp
-        
-        // If modal is open during resize, ensure it stays centered (CSS handles most, but good to know)
+        ctx.imageSmoothingEnabled = false; 
     }
 
     function startGame() {
         document.getElementById('intro-screen').style.display = 'none';
+        
+        // SHOW CONTROLS NOW if on mobile
+        if(isMobile) {
+            document.getElementById('mobile-dpad').style.display = 'block';
+            document.getElementById('mobile-action').style.display = 'flex';
+        }
+
         gameRunning = true;
-        // Resume audio context here if audio is added
     }
 
     /**
-     * CONTROLS LOGIC
+     * CONTROLS
      */
     function setupDesktopControls() {
         window.addEventListener('keydown', (e) => {
@@ -390,7 +368,6 @@
             if (e.code === 'Space') interact();
             if (['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(key)) gameRunning = true; 
             
-            // Map arrows to wasd
             if(e.key === 'ArrowUp') keys.w = true;
             if(e.key === 'ArrowDown') keys.s = true;
             if(e.key === 'ArrowLeft') keys.a = true;
@@ -417,37 +394,27 @@
             right: document.getElementById('btn-right')
         };
 
-        // Touch handling for D-pad sliding
         const handleTouch = (e) => {
-            e.preventDefault(); // Prevent scrolling
+            e.preventDefault(); 
             const touch = e.touches[0];
             const rect = dpad.getBoundingClientRect();
             const x = touch.clientX - rect.left;
             const y = touch.clientY - rect.top;
 
-            // Reset keys
             keys.w = keys.s = keys.a = keys.d = false;
-            
-            // Visual feedback reset
             Object.values(btns).forEach(b => b.classList.remove('active'));
 
-            // Check zones relative to 160x160 dpad
-            // Center is 80,80. 
-            // Deadzone in middle (radius 25)
             const dx = x - 80;
             const dy = y - 80;
             const dist = Math.sqrt(dx*dx + dy*dy);
 
-            if (dist > 15) { // Deadzone
-                // Determine angle
+            if (dist > 15) { 
                 const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-
                 if (angle > -135 && angle < -45) { keys.w = true; btns.up.classList.add('active'); }
                 else if (angle > 45 && angle < 135) { keys.s = true; btns.down.classList.add('active'); }
                 else if (angle >= 135 || angle <= -135) { keys.a = true; btns.left.classList.add('active'); }
                 else if (angle > -45 && angle < 45) { keys.d = true; btns.right.classList.add('active'); }
             }
-            
             gameRunning = true;
         };
 
@@ -461,14 +428,13 @@
         dpad.addEventListener('touchmove', handleTouch, { passive: false });
         dpad.addEventListener('touchend', stopTouch);
         
-        // Prevent accidental scaling on double tap
         document.addEventListener('dblclick', function(event) {
             event.preventDefault();
         }, { passive: false });
     }
 
     /**
-     * GAMEPLAY LOGIC
+     * GAME LOGIC
      */
     function update(dt) {
         if (!gameRunning || isModalOpen) return;
@@ -481,7 +447,6 @@
         if (keys.a) { dx = -PLAYER_SPEED; player.direction = 'left'; }
         if (keys.d) { dx = PLAYER_SPEED; player.direction = 'right'; }
 
-        // Diagonal normalization
         if (dx !== 0 && dy !== 0) {
             dx *= 0.7071;
             dy *= 0.7071;
@@ -496,19 +461,26 @@
             player.frame = 0;
         }
 
-        // Smooth Camera Follow
-        const targetCamX = player.x - canvas.width / 2 + player.width / 2;
-        const targetCamY = player.y - canvas.height / 2 + player.height / 2;
-        
-        // Simple lerp for smooth cam (optional, sticking to direct for pixel perfection)
-        camera.x = targetCamX; 
-        camera.y = targetCamY;
-        
-        // Clamp Camera
+        // Camera Logic: Center or Clamp
         const mapPixelWidth = MAP_WIDTH * TILE_SIZE;
         const mapPixelHeight = MAP_HEIGHT * TILE_SIZE;
-        camera.x = Math.max(0, Math.min(camera.x, mapPixelWidth - canvas.width));
-        camera.y = Math.max(0, Math.min(camera.y, mapPixelHeight - canvas.height));
+
+        if (mapPixelWidth < canvas.width) {
+            // Map is smaller than screen width: Center it
+            camera.x = -((canvas.width - mapPixelWidth) / 2);
+        } else {
+            // Map is larger: Clamp camera
+            const targetCamX = player.x - canvas.width / 2 + player.width / 2;
+            camera.x = Math.max(0, Math.min(targetCamX, mapPixelWidth - canvas.width));
+        }
+
+        if (mapPixelHeight < canvas.height) {
+            // Map is smaller than screen height: Center it
+            camera.y = -((canvas.height - mapPixelHeight) / 2);
+        } else {
+            const targetCamY = player.y - canvas.height / 2 + player.height / 2;
+            camera.y = Math.max(0, Math.min(targetCamY, mapPixelHeight - canvas.height));
+        }
 
         checkProximity();
     }
@@ -517,13 +489,11 @@
         const nextX = player.x + dx;
         const nextY = player.y + dy;
         
-        // X Axis Collision
         if (!isSolid(nextX, player.y) && !isSolid(nextX + player.width, player.y) &&
             !isSolid(nextX, player.y + player.height) && !isSolid(nextX + player.width, player.y + player.height)) {
             player.x = nextX;
         }
         
-        // Y Axis Collision
         if (!isSolid(player.x, nextY) && !isSolid(player.x + player.width, nextY) &&
             !isSolid(player.x, nextY + player.height) && !isSolid(player.x + player.width, nextY + player.height)) {
             player.y = nextY;
@@ -539,7 +509,6 @@
         
         if (tile === 1) return true; // Water
         
-        // Entity Collision
         for (let ent of entities) {
             if (x > ent.x * TILE_SIZE + 5 && x < (ent.x + 1) * TILE_SIZE - 5 &&
                 y > ent.y * TILE_SIZE + 10 && y < (ent.y + 1) * TILE_SIZE) {
@@ -596,8 +565,6 @@
 
     function openModal(entity) {
         isModalOpen = true;
-        
-        // Stop Movement
         keys.w = keys.a = keys.s = keys.d = false;
 
         const modal = document.getElementById('modal');
@@ -607,7 +574,6 @@
         title.innerHTML = entity.title;
         content.innerHTML = entity.content;
         
-        // Dynamic Title Colors
         const colors = {
             chest: 'text-yellow-400',
             statue: 'text-green-400',
@@ -627,62 +593,69 @@
     }
 
     /**
-     * DRAWING / RENDER LOOP
+     * DRAW
      */
     function draw() {
-        // Clear
-        ctx.fillStyle = '#1a1a1a';
+        // Clear with Water Color (fixes black space)
+        ctx.fillStyle = '#3498db';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.save();
         ctx.translate(-Math.floor(camera.x), -Math.floor(camera.y));
 
-        // Draw Map Logic
+        // Draw Map
         const startCol = Math.floor(camera.x / TILE_SIZE);
         const endCol = startCol + (canvas.width / TILE_SIZE) + 1;
         const startRow = Math.floor(camera.y / TILE_SIZE);
         const endRow = startRow + (canvas.height / TILE_SIZE) + 1;
 
-        for (let y = startRow; y <= endRow; y++) {
-            for (let x = startCol; x <= endCol; x++) {
-                if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH) {
-                    const tile = worldMap[y][x];
-                    const px = x * TILE_SIZE;
-                    const py = y * TILE_SIZE;
+        // Ensure we iterate slightly outside map bounds if map is centered (negative camera)
+        // Actually, just iterating 0 to MAP_WIDTH is safer for simplicity if performance permits
+        // But for "Infinite Water" effect, we rely on the clearRect color above.
+        // We only need to draw the ISLAND tiles.
+        
+        for (let y = 0; y < MAP_HEIGHT; y++) {
+            for (let x = 0; x < MAP_WIDTH; x++) {
+                // Optimization: Skip tiles outside view
+                const px = x * TILE_SIZE;
+                const py = y * TILE_SIZE;
+                if (px + TILE_SIZE < camera.x || px > camera.x + canvas.width ||
+                    py + TILE_SIZE < camera.y || py > camera.y + canvas.height) continue;
 
-                    if (tile === 0) { // Grass
-                        ctx.fillStyle = '#4a854a'; 
-                        ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
-                        // Detail
-                        ctx.fillStyle = '#5ba65b'; 
-                        ctx.fillRect(px + 4, py + 4, 4, 4);
-                        ctx.fillRect(px + 20, py + 30, 4, 4);
-                    } else if (tile === 1) { // Water
-                        ctx.fillStyle = '#3498db';
-                        ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
-                        // Waves
-                        const time = Date.now() / 400;
-                        const offset = Math.sin(time + x/2 + y/2) * 4;
-                        ctx.fillStyle = '#5dade2';
-                        ctx.fillRect(px + 5 + offset, py + 10, 20, 2);
-                        ctx.fillRect(px + 20 - offset, py + 30, 15, 2);
-                    } else if (tile === 2) { // Path
-                        ctx.fillStyle = '#9aa567';
-                        ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
-                        ctx.fillStyle = '#8a9557'; // grit
-                        ctx.fillRect(px + 10, py + 10, 2, 2);
-                        ctx.fillRect(px + 30, py + 35, 2, 2);
-                    } else if (tile === 3) { // Wood Floor
-                        ctx.fillStyle = '#5d4037';
-                        ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
-                        ctx.strokeStyle = '#4e342e';
-                        ctx.lineWidth = 2;
-                        ctx.beginPath();
-                        ctx.moveTo(px, py+12); ctx.lineTo(px+48, py+12);
-                        ctx.moveTo(px, py+24); ctx.lineTo(px+48, py+24);
-                        ctx.moveTo(px, py+36); ctx.lineTo(px+48, py+36);
-                        ctx.stroke();
-                    }
+                const tile = worldMap[y][x];
+
+                if (tile === 0) { // Grass
+                    ctx.fillStyle = '#4a854a'; 
+                    ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                    ctx.fillStyle = '#5ba65b'; 
+                    ctx.fillRect(px + 4, py + 4, 4, 4);
+                    ctx.fillRect(px + 20, py + 30, 4, 4);
+                } else if (tile === 1) { // Water (Island coast)
+                    // We draw this to blend with background
+                    ctx.fillStyle = '#3498db';
+                    ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                    // Waves
+                    const time = Date.now() / 400;
+                    const offset = Math.sin(time + x/2 + y/2) * 4;
+                    ctx.fillStyle = '#5dade2';
+                    ctx.fillRect(px + 5 + offset, py + 10, 20, 2);
+                    ctx.fillRect(px + 20 - offset, py + 30, 15, 2);
+                } else if (tile === 2) { // Path
+                    ctx.fillStyle = '#9aa567';
+                    ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                    ctx.fillStyle = '#8a9557'; 
+                    ctx.fillRect(px + 10, py + 10, 2, 2);
+                    ctx.fillRect(px + 30, py + 35, 2, 2);
+                } else if (tile === 3) { // Wood
+                    ctx.fillStyle = '#5d4037';
+                    ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                    ctx.strokeStyle = '#4e342e';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(px, py+12); ctx.lineTo(px+48, py+12);
+                    ctx.moveTo(px, py+24); ctx.lineTo(px+48, py+24);
+                    ctx.moveTo(px, py+36); ctx.lineTo(px+48, py+36);
+                    ctx.stroke();
                 }
             }
         }
@@ -703,9 +676,8 @@
         entities.forEach(ent => {
             const px = ent.x * TILE_SIZE;
             const py = ent.y * TILE_SIZE;
-            
             drawEntitySprite(ent, px, py);
-
+            
             if (ent.highlight) {
                 const bounce = Math.sin(Date.now() / 150) * 3;
                 ctx.fillStyle = '#fff';
@@ -754,7 +726,6 @@
             ctx.fillStyle = ent.color; 
             ctx.beginPath(); ctx.arc(x + 24, y + 12, 14, Math.PI, 0); ctx.lineTo(x + 38, y + 26); ctx.lineTo(x + 10, y + 26); ctx.fill();
             ctx.fillStyle = '#c0392b'; ctx.fillRect(x+10, y+12, 28, 14);
-            // Flag
             ctx.fillStyle = '#e74c3c'; ctx.fillRect(x+38, y+14, 4, 10);
         }
         else if (ent.type === 'npc') {
@@ -771,24 +742,19 @@
         const wobble = player.moving ? Math.sin(player.frame) * 2 : 0;
         const legOffset = player.moving ? Math.sin(player.frame * 2) * 5 : 0;
 
-        // Legs
         ctx.fillStyle = '#2c3e50';
         ctx.fillRect(px + 8, py + 24, 6, 8 + legOffset);
         ctx.fillRect(px + 18, py + 24, 6, 8 - legOffset);
 
-        // Body
         ctx.fillStyle = player.color;
         ctx.fillRect(px + 4, py + 12 + wobble, 24, 16);
 
-        // Head
         ctx.fillStyle = '#ffccaa';
         ctx.fillRect(px + 6, py - 2 + wobble, 20, 16);
         
-        // Hair (Hat)
         ctx.fillStyle = '#d35400';
         ctx.fillRect(px + 4, py - 6 + wobble, 24, 6);
         
-        // Eyes
         ctx.fillStyle = '#000';
         if (player.direction === 'down' || player.direction === 's') {
             ctx.fillRect(px + 10, py + 4 + wobble, 4, 4);
