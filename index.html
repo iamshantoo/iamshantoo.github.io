@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Md. Abul Hasan | Unity Developer</title>
+    <title>Md. Abul Hasan | Game Dev Portfolio</title>
     
-    <!-- FAVICON: A pixel art sword -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><path fill=%22%23bdc3c7%22 d=%22M7 1h2v9H7z%22/><path fill=%22%23f1c40f%22 d=%22M5 10h6v2H5z%22/><path fill=%22%238e44ad%22 d=%22M7 12h2v3H7z%22/></svg>">
+    <!-- FAVICON: A pixel art Game Controller -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><path fill=%22%232c3e50%22 d=%22M2 6h12v6H2z%22/><path fill=%22%2395a5a6%22 d=%22M3 5h2v1H3zM11 5h2v1h-2z%22/><path fill=%22%23e74c3c%22 d=%22M12 8h1v1h-1z%22/><path fill=%22%23f1c40f%22 d=%22M10 9h1v1h-1z%22/><path fill=%22%23ecf0f1%22 d=%22M4 8h1v1H4zM3 9h1v1H3zM5 9h1v1H5zM4 10h1v1H4z%22/></svg>">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         /* CORE SETUP */
         html, body {
-            height: 100%; /* Ensure full height */
+            height: 100%; 
             width: 100%;
         }
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #000000; /* Start with BLACK to fix start screen bar */
+            background-color: #000000; /* Start black */
             font-family: 'VT323', monospace; 
             touch-action: none; 
             user-select: none; 
             -webkit-user-select: none;
-            transition: background-color 0.5s ease; /* Smooth transition to water color */
+            transition: background-color 0.5s ease;
         }
         canvas {
             display: block;
@@ -160,9 +160,8 @@
 
         #modal-content a { color: #60a5fa; text-decoration: none; border-bottom: 1px dashed #60a5fa; }
         #modal-content a:hover { color: #93c5fd; border-bottom: 1px solid #93c5fd; }
-        #modal-content ul { list-style-type: none; padding-left: 0; }
-        #modal-content li { margin-bottom: 8px; padding-left: 20px; position: relative; }
-        #modal-content li:before { content: "►"; position: absolute; left: 0; color: #fbbf24; font-size: 0.8em; }
+        #modal-content ul { list-style-type: square; padding-left: 20px; } /* Restored list style */
+        #modal-content li { margin-bottom: 8px; }
         #modal-content strong { color: #fbbf24; font-weight: normal; letter-spacing: 0.5px; }
     </style>
 </head>
@@ -252,9 +251,9 @@
     // Input State
     const keys = { w: false, a: false, s: false, d: false, Space: false };
 
-    // Map Dimensions
-    const MAP_WIDTH = 34;
-    const MAP_HEIGHT = 24;
+    // Expanded Map Dimensions
+    const MAP_WIDTH = 40; 
+    const MAP_HEIGHT = 32; // Increased height to fit bottom dock
     
     let worldMap = [];
     
@@ -266,17 +265,23 @@
                 // Base: Water
                 let tile = 1; 
                 
-                // Island Logic
+                // Main Island (Centered-ish)
                 if (x > 3 && x < MAP_WIDTH - 4 && y > 3 && y < MAP_HEIGHT - 4) {
                     tile = 0; // Grass
                 }
                 
-                // Central Hub Paths
-                if (x === 16 && y > 3 && y < MAP_HEIGHT - 4) tile = 2; // Vertical Path
-                if (y === 12 && x > 3 && x < MAP_WIDTH - 4) tile = 2; // Horizontal Path
+                // -- PATHWAYS --
+                // Central Vertical Path
+                if (x === 20 && y > 3 && y < MAP_HEIGHT - 4) tile = 2; 
+                // Central Horizontal Path
+                if (y === 15 && x > 3 && x < MAP_WIDTH - 4) tile = 2; 
                 
-                // House Area (Top Center)
-                if (x > 13 && x < 19 && y > 4 && y < 9) tile = 3; 
+                // -- ZONES --
+                // House Area (North Center - Experience)
+                if (x > 17 && x < 23 && y > 5 && y < 10) tile = 3; 
+
+                // Education Area (South - Library)
+                if (x > 15 && x < 25 && y > 22 && y < 27) tile = 3;
 
                 row.push(tile);
             }
@@ -286,20 +291,47 @@
 
     // Entities
     const entities = [
-        { x: 16, y: 16, type: 'sign', color: '#8B4513', id: 'intro', title: 'Welcome!', content: 'Hi, I\'m <strong>Md. Abul Hasan</strong>.<br><br>I am an innovative Unity Developer with 4+ years of experience in creating multi-platform games, simulations, and AR/VR applications.<br><br>Use the controls to explore the island and interact with objects to see my work!' },
-        { x: 14, y: 6, type: 'npc', color: '#4169E1', id: 'exp_singularity', title: 'Singularity Limited', content: '<strong>Experience Engineer</strong><br><em>Jan 2025 - Present</em><br><br>Developing interactive simulations and immersive AR/VR applications for commercial and research projects. Collaborating with cross-functional teams to design, prototype, and deploy real-time 3D experiences.' },
-        { x: 18, y: 6, type: 'npc', color: '#8e44ad', id: 'exp_battery', title: 'Battery Low Interactive', content: '<strong>Unity Developer & QA Engineer</strong><br><em>Sep 2021 - Jan 2025</em><br><br>Designed and developed games, simulations, and AR/VR experiences. Transitioned to Lead Gameplay Programmer in 2023, focusing on performance optimization and hardware integration.' },
+        // --- START (CENTER) ---
+        { x: 20, y: 18, type: 'sign', color: '#8B4513', id: 'intro', title: 'Welcome!', content: 'Hi, I\'m <strong>Md. Abul Hasan</strong>.<br><br>I am an innovative Unity Developer with 4+ years of experience in creating multi-platform games, simulations, and AR/VR/XR applications.<br><br><strong>Explore:</strong><br>North: Work Experience<br>West: Skills & Awards<br>East: Projects Gallery<br>South: Education Library' },
+
+        // --- NORTH: EXPERIENCE (OFFICE) ---
+        { x: 18, y: 7, type: 'npc', color: '#4169E1', id: 'exp_singularity', title: 'Singularity Limited', content: '<strong>Experience Engineer</strong><br><em>Jan 2025 - Present</em><br><br><ul><li>Developing interactive simulations and immersive AR/VR/XR applications for commercial and research projects.</li><li>Collaborating with cross-functional teams to design, prototype, and deploy real-time 3D experiences.</li></ul>' },
+        { x: 22, y: 7, type: 'npc', color: '#8e44ad', id: 'exp_battery', title: 'Battery Low Interactive', content: '<strong>Unity Developer & QA Engineer</strong><br><em>Sep 2021 - Jan 2025</em><br><br><ul><li>Designed and developed games, simulations, and AR/VR/XR experiences using Unity.</li><li>Transitioned to Lead Gameplay Programmer in 2023, focusing on performance optimization and hardware integration.</li></ul>' },
+
+        // --- WEST: SKILLS & AWARDS (GARDEN) ---
+        // Skills
         { x: 6, y: 7, type: 'statue', color: '#7f8c8d', id: 'skill_unity', title: 'Game Development', content: '<strong>Core Engines:</strong> Unity 3D/2D<br><strong>Languages:</strong> C#, C++, Python<br><strong>Key Skills:</strong> Gameplay Programming, Level Design, Optimization, Physics Simulation.' },
-        { x: 6, y: 11, type: 'statue', color: '#7f8c8d', id: 'skill_arvr', title: 'AR / VR / MR', content: '<strong>SDKs:</strong> Vuforia, ARFoundation, XR Interaction Toolkit.<br><strong>Expertise:</strong> Immersive experiences, Real-time 3D, sensor integration.' },
+        { x: 6, y: 11, type: 'statue', color: '#7f8c8d', id: 'skill_arvr', title: 'AR / VR / XR', content: '<strong>SDKs:</strong> Vuforia, ARFoundation, XR Interaction Toolkit.<br><strong>Expertise:</strong> Immersive experiences, Real-time 3D, sensor integration.' },
         { x: 6, y: 15, type: 'statue', color: '#7f8c8d', id: 'skill_tools', title: 'Tools & Hardware', content: '<strong>Tools:</strong> Blender, Git, JIRA, Visual Studio, Adobe Creative Suite.<br><strong>Hardware:</strong> Arduino Programming, IoT Sensor Integration, Hardware-Software Bridges.' },
-        { x: 26, y: 6, type: 'chest', color: '#FFD700', id: 'proj_visa', title: 'VISA AR Photobooth', content: '<em>July 2025 - Aug 2025</em><br><br>Developed a system that captures photos in real-time, applies multiple AR frames, generates QRs, and allows printing using a Unity and Python bridge.' },
-        { x: 26, y: 9, type: 'chest', color: '#FFD700', id: 'proj_harvester', title: 'Harvester Simulator', content: '<em>Aug 2023 - Nov 2024</em><br><br>A physics-based realistic control system for Combined Harvester Operator Training. Built using Unity and Arduino-based hardware integration for a custom controller.' },
-        { x: 26, y: 12, type: 'chest', color: '#FFD700', id: 'proj_vr', title: 'VR Sports Simulations', content: '<em>2025 - Present</em><br><br><strong>VR Goalkeeper & VR Cricket:</strong> Immersive sports simulations focusing on realistic physics, VR interaction mechanics, and engaging gameplay loops.' },
-        { x: 26, y: 15, type: 'chest', color: '#FFD700', id: 'proj_iot', title: 'Smart Factory (IoT)', content: '<strong>Academic Project</strong><br><br>Designed and implemented a scalable IoT-driven factory model integrating sensors, automation logic, and remote monitoring systems.' },
-        { x: 8, y: 18, type: 'trophy', color: '#f1c40f', id: 'award_blockchain', title: 'Intl Blockchain Olympiad', content: '<strong>2021 Award Winner</strong><br><br>Document Authentication Category Winner at the International Blockchain Olympiad 2021.' },
-        { x: 10, y: 18, type: 'trophy', color: '#f1c40f', id: 'award_hackathon', title: 'Hackathon Champion', content: '<strong>UAP CSE Carnival 2020</strong><br><br>Champion of the Hardware and Software Carnival Hackathon.' },
-        { x: 22, y: 18, type: 'sign', color: '#e67e22', id: 'edu_bsc', title: 'Education', content: '<strong>Bachelor of Science in CSE</strong><br>University of Asia Pacific (2016-2021)<br><br><em>Achievements:</em><br>- UAP CSE Hackathon Champion<br>- Blockchain Olympiad Winner' },
-        { x: 16, y: 19, type: 'mailbox', color: '#c0392b', id: 'contact', title: 'Contact Me', content: 'Let\'s build the future together!<br><br><strong>Phone:</strong> +8801777148127<br><strong>Email:</strong> shantouap40@gmail.com<br><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/iam-shanto" target="_blank">in/iam-shanto</a><br><strong>GitHub:</strong> <a href="https://github.com/iamshantoo" target="_blank">github.com/iamshantoo</a><br><strong>YouTube:</strong> @gamifyeverything' }
+        
+        // Awards
+        { x: 10, y: 20, type: 'trophy', color: '#f1c40f', id: 'award_blockchain', title: 'Intl Blockchain Olympiad', content: '<strong>2021 Award Winner</strong><br><br>Document Authentication Category Winner at the International Blockchain Olympiad 2021.' },
+        { x: 8, y: 20, type: 'trophy', color: '#f1c40f', id: 'award_hackathon', title: 'Hackathon Champion', content: '<strong>UAP CSE Carnival 2020</strong><br><br>Champion of the Hardware and Software Carnival Hackathon (24-hour sprint).' },
+
+        // --- SOUTH: EDUCATION (LIBRARY) ---
+        { x: 20, y: 24, type: 'sign', color: '#e67e22', id: 'edu_bsc', title: 'University (B.Sc)', content: '<strong>Bachelor of Science in CSE</strong><br><em>University of Asia Pacific</em> (2016-2021)<br><br><strong>CGPA:</strong> 2.92/4.00<br><strong>Key Activities:</strong> Hackathon Champion, Blockchain Olympiad Winner, Thesis on IoT.' },
+        { x: 17, y: 24, type: 'bookshelf', color: '#d35400', id: 'edu_hsc', title: 'College (HSC)', content: '<strong>Higher Secondary Certificate</strong><br><em>Ghatail Cantonment College</em> (2014)<br><br><strong>Group:</strong> Science<br><strong>GPA:</strong> 4.10/5.00' },
+        { x: 23, y: 24, type: 'bookshelf', color: '#d35400', id: 'edu_ssc', title: 'School (SSC)', content: '<strong>Secondary School Certificate</strong><br><em>Kadamtali Hasan Public High School</em> (2012)<br><br><strong>Group:</strong> Science<br><strong>GPA:</strong> 5.00/5.00' },
+
+        // --- EAST: PROJECTS GALLERY (TREASURE ROOM) ---
+        // Row 1: Recent AR/VR
+        { x: 28, y: 6, type: 'chest', color: '#FFD700', id: 'proj_visa', title: 'VISA AR Photobooth', content: '<em>July 2025 - Aug 2025</em><br><br>Real-time photo capture system with multiple AR frames, QR generation, and Python-Unity bridge for printing.' },
+        { x: 32, y: 6, type: 'chest', color: '#FFD700', id: 'proj_vr_sports', title: 'VR Sports Suite', content: '<em>2025 - Present</em><br><br><strong>VR Goalkeeper, VR Cricket:</strong><br>Immersive simulations focusing on realistic physics and VR interaction mechanics.' },
+        
+        // Row 2: Simulations & Hardware
+        { x: 28, y: 10, type: 'chest', color: '#FFD700', id: 'proj_harvester', title: 'Harvester Simulator', content: '<em>2023 - 2024</em><br><br>Physics-based training simulator for Combined Harvesters using custom Arduino-based hardware controllers.' },
+        { x: 32, y: 10, type: 'chest', color: '#FFD700', id: 'proj_drone', title: 'Drone Simulator', content: '<em>Nov 2024 - Jan 2025</em><br><br>Realistic drone flight simulation. Contributed to Level Design, Lighting, and Technical Art.' },
+        
+        // Row 3: WebGL & Mobile
+        { x: 28, y: 14, type: 'chest', color: '#FFD700', id: 'proj_games_web', title: 'Web Games', content: '<strong>Chashi Nobanno:</strong> Casual cultural web game.<br><strong>2D Spin Wheel Cricket:</strong> WebGL sports game.<br><strong>Penalty Shootout:</strong> WebGL sports game.' },
+        { x: 32, y: 14, type: 'chest', color: '#FFD700', id: 'proj_games_mobile', title: 'Mobile Games', content: '<strong>Android Casual Games:</strong> Multiple casual titles.<br><strong>Bangladesh AR:</strong> AR app using Vuforia.<br><strong>Memory Game:</strong> Puzzle game with hardware integration.' },
+
+        // Row 4: Academic & Misc
+        { x: 28, y: 18, type: 'chest', color: '#c0c0c0', id: 'proj_academic', title: 'Academic Projects', content: '<strong>Smart Factory (IoT):</strong> Industrial automation system (Thesis).<br><strong>Env Monitoring:</strong> IoT based system.<br><strong>E-Commerce:</strong> Django based website.' },
+        { x: 32, y: 18, type: 'chest', color: '#c0c0c0', id: 'proj_virtual_gallery', title: 'Virtual Gallery', content: '<em>2023 - 2024</em><br><br>WebGL Virtual Gallery Exhibition. Worked on Level Design, Lighting, UI, and SFX.' },
+
+        // --- CONTACT (SOUTH DOCK) ---
+        { x: 20, y: 28, type: 'mailbox', color: '#c0392b', id: 'contact', title: 'Contact Me', content: 'Let\'s build the future together!<br><br><strong>Phone:</strong> +8801777148127<br><strong>Email:</strong> shantouap40@gmail.com<br><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/iam-shanto" target="_blank">in/iam-shanto</a><br><strong>GitHub:</strong> <a href="https://github.com/iamshantoo" target="_blank">github.com/iamshantoo</a><br><strong>YouTube:</strong> @gamifyeverything' }
     ];
 
     /**
@@ -309,8 +341,9 @@
         checkDevice();
         generateMap();
         
-        player.x = 16 * TILE_SIZE;
-        player.y = 12 * TILE_SIZE;
+        // Center Player spawn (Map Center is approx 20, 15)
+        player.x = 20 * TILE_SIZE;
+        player.y = 15 * TILE_SIZE;
 
         resize();
         window.addEventListener('resize', resize);
@@ -325,20 +358,17 @@
         isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         
         const hints = document.getElementById('controls-hint');
-        const notif = document.getElementById('notification');
-
+        
         if (isMobile) {
             hints.innerHTML = `
                 <div class="flex flex-col items-center"><span class="text-yellow-400">D-PAD</span><span>Move</span></div>
                 <div class="flex flex-col items-center"><span class="text-yellow-400">A BUTTON</span><span>Interact</span></div>
             `;
-            notif.innerText = "Tap 'A' to Interact";
         } else {
             hints.innerHTML = `
                 <div class="flex flex-col items-center"><span class="border border-gray-500 px-2 py-1 rounded text-yellow-400">W A S D</span><span>Move</span></div>
                 <div class="flex flex-col items-center"><span class="border border-gray-500 px-2 py-1 rounded text-yellow-400">SPACE</span><span>Interact</span></div>
             `;
-            notif.innerText = "Press SPACE to Interact";
         }
     }
 
@@ -586,7 +616,8 @@
             trophy: 'text-yellow-500',
             npc: 'text-blue-400',
             mailbox: 'text-red-400',
-            sign: 'text-white'
+            sign: 'text-white',
+            bookshelf: 'text-orange-400'
         };
         title.className = `text-4xl pixel-text tracking-wide ${colors[entity.type] || 'text-white'}`;
 
@@ -733,6 +764,17 @@
             ctx.fillStyle = ent.color; ctx.fillRect(x + 10, y + 18, 28, 24);
             ctx.fillStyle = '#ffccaa'; ctx.fillRect(x + 14, y + 4, 20, 18);
             ctx.fillStyle = '#333'; ctx.fillRect(x + 18, y + 10, 4, 4); ctx.fillRect(x + 28, y + 10, 4, 4);
+        }
+        else if (ent.type === 'bookshelf') {
+            ctx.fillStyle = '#8e44ad'; ctx.fillRect(x + 8, y + 12, 32, 32); // Main shelf
+            ctx.fillStyle = '#6c3483'; ctx.fillRect(x + 4, y + 8, 40, 4); // Top trim
+            // Books
+            const bookColors = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71'];
+            for(let i=0; i<4; i++) {
+                ctx.fillStyle = bookColors[i];
+                ctx.fillRect(x + 10 + (i*6), y + 16, 4, 10);
+                ctx.fillRect(x + 10 + (i*6), y + 30, 4, 10);
+            }
         }
     }
 
