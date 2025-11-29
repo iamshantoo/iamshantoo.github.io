@@ -358,17 +358,20 @@
         isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         
         const hints = document.getElementById('controls-hint');
+        const notif = document.getElementById('notification');
         
         if (isMobile) {
             hints.innerHTML = `
                 <div class="flex flex-col items-center"><span class="text-yellow-400">D-PAD</span><span>Move</span></div>
                 <div class="flex flex-col items-center"><span class="text-yellow-400">A BUTTON</span><span>Interact</span></div>
             `;
+            notif.innerText = "Tap 'A' to Interact";
         } else {
             hints.innerHTML = `
                 <div class="flex flex-col items-center"><span class="border border-gray-500 px-2 py-1 rounded text-yellow-400">W A S D</span><span>Move</span></div>
                 <div class="flex flex-col items-center"><span class="border border-gray-500 px-2 py-1 rounded text-yellow-400">SPACE</span><span>Interact</span></div>
             `;
+            notif.innerText = "Press SPACE to Interact";
         }
     }
 
