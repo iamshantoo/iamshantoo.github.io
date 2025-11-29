@@ -8,14 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         /* CORE SETUP */
+        html, body {
+            height: 100%; /* Ensure full height */
+            width: 100%;
+        }
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #3498db; /* Default to water color to avoid black flashes */
+            background-color: #000000; /* Start with BLACK to fix start screen bar */
             font-family: 'VT323', monospace; 
             touch-action: none; 
             user-select: none; 
             -webkit-user-select: none;
+            transition: background-color 0.5s ease; /* Smooth transition to water color */
         }
         canvas {
             display: block;
@@ -85,12 +90,11 @@
             left: 30px;
             width: 160px;
             height: 160px;
-            display: none; /* Hidden by default, shown ONLY in game loop */
+            display: none; /* Hidden by default */
             z-index: 50;
             opacity: 0.8;
         }
         
-        /* D-Pad visual shapes */
         .d-pad-bg { position: absolute; width: 100%; height: 100%; }
         .d-pad-btn {
             position: absolute;
@@ -319,8 +323,6 @@
         const hints = document.getElementById('controls-hint');
         const notif = document.getElementById('notification');
 
-        // Note: We do NOT show the controls here anymore.
-        // We only set the text hints.
         if (isMobile) {
             hints.innerHTML = `
                 <div class="flex flex-col items-center"><span class="text-yellow-400">D-PAD</span><span>Move</span></div>
@@ -345,6 +347,9 @@
     function startGame() {
         document.getElementById('intro-screen').style.display = 'none';
         
+        // SWITCH BACKGROUND COLOR TO WATER BLUE FOR INFINITE OCEAN EFFECT
+        document.body.style.backgroundColor = '#3498db';
+
         // SHOW CONTROLS NOW if on mobile
         if(isMobile) {
             document.getElementById('mobile-dpad').style.display = 'block';
@@ -461,21 +466,18 @@
             player.frame = 0;
         }
 
-        // Camera Logic: Center or Clamp
+        // Camera Logic
         const mapPixelWidth = MAP_WIDTH * TILE_SIZE;
         const mapPixelHeight = MAP_HEIGHT * TILE_SIZE;
 
         if (mapPixelWidth < canvas.width) {
-            // Map is smaller than screen width: Center it
             camera.x = -((canvas.width - mapPixelWidth) / 2);
         } else {
-            // Map is larger: Clamp camera
             const targetCamX = player.x - canvas.width / 2 + player.width / 2;
             camera.x = Math.max(0, Math.min(targetCamX, mapPixelWidth - canvas.width));
         }
 
         if (mapPixelHeight < canvas.height) {
-            // Map is smaller than screen height: Center it
             camera.y = -((canvas.height - mapPixelHeight) / 2);
         } else {
             const targetCamY = player.y - canvas.height / 2 + player.height / 2;
@@ -608,11 +610,6 @@
         const endCol = startCol + (canvas.width / TILE_SIZE) + 1;
         const startRow = Math.floor(camera.y / TILE_SIZE);
         const endRow = startRow + (canvas.height / TILE_SIZE) + 1;
-
-        // Ensure we iterate slightly outside map bounds if map is centered (negative camera)
-        // Actually, just iterating 0 to MAP_WIDTH is safer for simplicity if performance permits
-        // But for "Infinite Water" effect, we rely on the clearRect color above.
-        // We only need to draw the ISLAND tiles.
         
         for (let y = 0; y < MAP_HEIGHT; y++) {
             for (let x = 0; x < MAP_WIDTH; x++) {
