@@ -178,6 +178,7 @@
             <h1 class="text-5xl md:text-7xl text-white mb-2 pixel-text text-center text-yellow-400 leading-tight">UNITY QUEST</h1>
             <p class="text-2xl md:text-3xl text-blue-300 mb-6 pixel-text text-center">Md. Abul Hasan</p>
             
+            <!-- Intro Panel -->
             <div class="bg-gray-900 border-2 border-gray-600 p-6 rounded-lg max-w-md w-full mb-8">
                 <p class="text-2xl text-gray-300 mb-6 pixel-text text-center">Game Developer | AR/VR/XR Expert</p>
                 
@@ -253,7 +254,7 @@
 
     // Expanded Map Dimensions
     const MAP_WIDTH = 40; 
-    const MAP_HEIGHT = 32; // Increased height to fit bottom dock
+    const MAP_HEIGHT = 32; 
     
     let worldMap = [];
     
@@ -300,9 +301,9 @@
 
         // --- WEST: SKILLS & AWARDS (GARDEN) ---
         // Skills
-        { x: 6, y: 7, type: 'statue', color: '#7f8c8d', id: 'skill_unity', title: 'Game Development', content: '<strong>Core Engines:</strong> Unity 3D/2D<br><strong>Languages:</strong> C#, C++, Python<br><strong>Key Skills:</strong> Gameplay Programming, Level Design, Optimization, Physics Simulation.' },
-        { x: 6, y: 11, type: 'statue', color: '#7f8c8d', id: 'skill_arvr', title: 'AR / VR / XR', content: '<strong>SDKs:</strong> Vuforia, ARFoundation, XR Interaction Toolkit.<br><strong>Expertise:</strong> Immersive experiences, Real-time 3D, sensor integration.' },
-        { x: 6, y: 15, type: 'statue', color: '#7f8c8d', id: 'skill_tools', title: 'Tools & Hardware', content: '<strong>Tools:</strong> Blender, Git, JIRA, Visual Studio, Adobe Creative Suite.<br><strong>Hardware:</strong> Arduino Programming, IoT Sensor Integration, Hardware-Software Bridges.' },
+        { x: 6, y: 7, type: 'statue', color: '#7f8c8d', id: 'skill_unity', title: 'Game Development', content: '<strong>Core Engines:</strong> Unity 3D/2D<br><strong>Languages:</strong> C#, C++, Python<br><strong>Key Skills:</strong> Gameplay Programming, UI Programming, Level Design, Optimization, Physics Simulation.' },
+        { x: 6, y: 11, type: 'statue', color: '#7f8c8d', id: 'skill_arvr', title: 'AR / VR / XR', content: '<strong>SDKs:</strong> Vuforia, ARFoundation, ARCore, Meta SDK, XR Interaction Toolkit.<br><strong>Expertise:</strong> Immersive experiences, Real-time 3D, sensor integration.' },
+        { x: 6, y: 15, type: 'statue', color: '#7f8c8d', id: 'skill_tools', title: 'Tools & Hardware', content: '<strong>Tools:</strong> Blender, Lens Studio, Git, JIRA, Visual Studio, Adobe Creative Suite.<br><strong>Hardware:</strong> Arduino Programming, IoT Sensor Integration, Hardware-Software Bridges.' },
         
         // Awards
         { x: 10, y: 20, type: 'trophy', color: '#f1c40f', id: 'award_blockchain', title: 'Intl Blockchain Olympiad', content: '<strong>2021 Award Winner</strong><br><br>Document Authentication Category Winner at the International Blockchain Olympiad 2021.' },
@@ -394,6 +395,15 @@
         }
 
         gameRunning = true;
+
+        // FORCE CAMERA UPDATE TO SNAP TO PLAYER
+        updateCamera();
+
+        // --- AUTO-OPEN WELCOME MODAL ---
+        const introEntity = entities.find(e => e.id === 'intro');
+        if (introEntity) {
+            openModal(introEntity);
+        }
     }
 
     /**
@@ -503,7 +513,11 @@
             player.frame = 0;
         }
 
-        // Camera Logic
+        updateCamera();
+        checkProximity();
+    }
+
+    function updateCamera() {
         const mapPixelWidth = MAP_WIDTH * TILE_SIZE;
         const mapPixelHeight = MAP_HEIGHT * TILE_SIZE;
 
@@ -520,8 +534,6 @@
             const targetCamY = player.y - canvas.height / 2 + player.height / 2;
             camera.y = Math.max(0, Math.min(targetCamY, mapPixelHeight - canvas.height));
         }
-
-        checkProximity();
     }
 
     function movePlayer(dx, dy) {
