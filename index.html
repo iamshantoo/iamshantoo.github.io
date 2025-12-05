@@ -301,9 +301,9 @@
 
         // --- WEST: SKILLS & AWARDS (GARDEN) ---
         // Skills
-        { x: 6, y: 7, type: 'statue', color: '#7f8c8d', id: 'skill_unity', title: 'Game Development', content: '<strong>Core Engines:</strong> Unity 3D/2D<br><strong>Languages:</strong> C#, C++, Python<br><strong>Key Skills:</strong> Gameplay Programming, UI Programming, Level Design, Optimization, Physics Simulation.' },
-        { x: 6, y: 11, type: 'statue', color: '#7f8c8d', id: 'skill_arvr', title: 'AR / VR / XR', content: '<strong>SDKs:</strong> Vuforia, ARFoundation, ARCore, Meta SDK, XR Interaction Toolkit.<br><strong>Expertise:</strong> Immersive experiences, Real-time 3D, sensor integration.' },
-        { x: 6, y: 15, type: 'statue', color: '#7f8c8d', id: 'skill_tools', title: 'Tools & Hardware', content: '<strong>Tools:</strong> Blender, Lens Studio, Git, JIRA, Visual Studio, Adobe Creative Suite.<br><strong>Hardware:</strong> Arduino Programming, IoT Sensor Integration, Hardware-Software Bridges.' },
+        { x: 6, y: 7, type: 'statue', color: '#7f8c8d', id: 'skill_unity', title: 'Game Development', content: '<strong>Core Engines:</strong> Unity 3D/2D<br><strong>Languages:</strong> C#, C++, Python<br><strong>Key Skills:</strong> Gameplay Programming, Level Design, Optimization, Physics Simulation.' },
+        { x: 6, y: 11, type: 'statue', color: '#7f8c8d', id: 'skill_arvr', title: 'AR / VR / XR', content: '<strong>SDKs:</strong> Vuforia, ARFoundation, XR Interaction Toolkit.<br><strong>Expertise:</strong> Immersive experiences, Real-time 3D, sensor integration.' },
+        { x: 6, y: 15, type: 'statue', color: '#7f8c8d', id: 'skill_tools', title: 'Tools & Hardware', content: '<strong>Tools:</strong> Blender, Git, JIRA, Visual Studio, Adobe Creative Suite.<br><strong>Hardware:</strong> Arduino Programming, IoT Sensor Integration, Hardware-Software Bridges.' },
         
         // Awards
         { x: 10, y: 20, type: 'trophy', color: '#f1c40f', id: 'award_blockchain', title: 'Intl Blockchain Olympiad', content: '<strong>2021 Award Winner</strong><br><br>Document Authentication Category Winner at the International Blockchain Olympiad 2021.' },
@@ -356,7 +356,9 @@
     }
 
     function checkDevice() {
-        isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        // STRICTER Mobile Check: Touch capable AND Screen width < 1024px
+        // This ensures desktops/laptops with touchscreens still get the Desktop UI
+        isMobile = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)) && (window.innerWidth < 1024);
         
         const hints = document.getElementById('controls-hint');
         const notif = document.getElementById('notification');
@@ -369,7 +371,7 @@
             notif.innerText = "Tap 'A' to Interact";
         } else {
             hints.innerHTML = `
-                <div class="flex flex-col items-center"><span class="border border-gray-500 px-2 py-1 rounded text-yellow-400">W A S D</span><span>Move</span></div>
+                <div class="flex flex-col items-center"><span class="border border-gray-500 px-2 py-1 rounded text-yellow-400">W,A,S,D</span><span>Move</span></div>
                 <div class="flex flex-col items-center"><span class="border border-gray-500 px-2 py-1 rounded text-yellow-400">SPACE</span><span>Interact</span></div>
             `;
             notif.innerText = "Press SPACE to Interact";
