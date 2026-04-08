@@ -1,1 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Md. Abul Hasan - Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #525659;
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+        }
+        .resume-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            min-height: 1100px;
+        }
+        
+        /* Links Styling for Projects/Companies */
+        a.resume-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        a.resume-link:hover {
+            color: #3498db;
+            border-bottom: 1px solid #3498db;
+        }
+        
+        /* --- Left Column (Sidebar) --- */
+        .left-column {
+            width: 33%;
+            background-color: #ebebeb;
+            padding: 40px 25px;
+            box-sizing: border-box;
+            border-right: 1px solid #dcdcdc;
+        }
+        
+        .photo-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .profile-photo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #cccccc;
+        }
+        
+        .name-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .left-column h1 {
+            font-size: 26px;
+            margin: 0 0 5px 0;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .left-column h2 {
+            font-size: 16px;
+            color: #34495e;
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .left-column h3 {
+            font-size: 16px;
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .left-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: #444;
+        }
+        
+        /* Contact Section with Icons */
+        .contact-list li {
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-list i {
+            color: #2c3e50;
+            width: 20px;
+            text-align: center;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        .skills-list li {
+            margin-bottom: 4px;
+        }
+        .skills-list li::before {
+            content: "• ";
+            color: #2c3e50;
+            font-weight: bold;
+        }
 
+        /* --- Right Column (Main Content) --- */
+        .right-column {
+            width: 67%;
+            padding: 40px 35px;
+            box-sizing: border-box;
+        }
+        
+        .right-column h2 {
+            font-size: 18px;
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .profile-text {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+        }
+        
+        .item-block {
+            margin-bottom: 15px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 3px;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+        
+        .item-date {
+            font-size: 12px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .item-subtitle {
+            font-size: 13.5px;
+            color: #444;
+            font-style: italic;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        
+        .right-column ul {
+            font-size: 13.5px;
+            line-height: 1.6;
+            padding-left: 18px;
+            margin-top: 0;
+            color: #333;
+            list-style-type: disc;
+        }
+        
+        .right-column ul li {
+            margin-bottom: 4px;
+        }
+
+        .project-title {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .resume-container {
+                flex-direction: column;
+            }
+            .left-column, .right-column {
+                width: 100%;
+                border-right: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="resume-container">
+    <div class="left-column">
+        
+        <div class="photo-container">
+            <img src="profile-photo.jpg" alt="Md. Abul Hasan" class="profile-photo">
+        </div>
+
+        <div class="name-container">
+            <h1>Md. Abul Hasan</h1>
+            <h2>Unity Developer</h2>
+        </div>
+
+        <div class="contact-info">
+            <ul class="contact-list">
+                <li><i class="fas fa-envelope"></i> shantouap40@gmail.com</li>
+                <li><i class="fas fa-phone"></i> +8801777148127</li>
+                <li><i class="fas fa-map-marker-alt"></i> Dhaka, Bangladesh</li>
+                <li><i class="fab fa-linkedin"></i> linkedin.com/in/iam-shanto</li>
+                <li><i class="fas fa-globe"></i> iamshantoo.github.io</li>
+                <li><i class="fab fa-github"></i> github.com/iamshantoo</li>
+            </ul>
+        </div>
+
+        <h3>Skills</h3>
+        <ul class="skills-list">
+            <li>Gameplay Programming</li>
+            <li>UI Programming</li>
+            <li>AR/VR Programming</li>
+            <li>Hardware Programming</li>
+            <li>Lighting & Rendering</li>
+            <li>Performance Optimization</li>
+            <li>Game Publishing</li>
+        </ul>
+
+        <h3>Programming Languages</h3>
+        <ul class="skills-list">
+            <li>C# (Unity Programming)</li>
+            <li>C++ (Arduino Programming)</li>
+            <li>Python (Unity Backend Bridge)</li>
+        </ul>
+
+        <h3>Platforms</h3>
+        <ul class="skills-list">
+            <li>Android, Windows, VR (Meta Quest), WebGL, Mobile, Desktop</li>
+        </ul>
+
+        <h3>Tools & Software</h3>
+        <ul class="skills-list">
+            <li>Unity, Visual Studio, Git, Lens Studio, JIRA, Trello, Slack, Discord</li>
+        </ul>
+
+        <h3>SDKs</h3>
+        <ul class="skills-list">
+            <li>AR Foundation</li>
+            <li>AR Core</li>
+            <li>Vuforia SDK</li>
+            <li>Meta/Oculus SDK</li>
+            <li>XR Interaction Toolkit</li>
+            <li>WebAR</li>
+        </ul>
+
+        <h3>Languages</h3>
+        <ul class="skills-list">
+            <li>English - Fluent</li>
+            <li>Bengali - Native/Bilingual</li>
+        </ul>
+    </div>
+
+    <div class="right-column">
+        
+        <div class="section">
+            <h2>Profile</h2>
+            <p class="profile-text">Unity Developer with 4+ years of experience building cross-platform games, simulations, and AR/VR/XR applications. Skilled in C# gameplay programming, UI programming, performance profiling and optimization, hardware integration, and real-time 3D interaction. Hands-on experience with Unity AR Foundation, ARCore, Vuforia, XR Interaction Toolkit, Meta/Oculus SDKs, Git, and device-based workflows. Experienced in building production-ready applications for mobile, desktop, VR headsets, and browser/WebGL platforms in collaborative multi-disciplinary teams.</p>
+        </div>
+
+        <div class="section">
+            <h2>Professional Experience</h2>
+            
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="item-title">Experience Engineer (Unity)</span>
+                    <span class="item-date">01/2025 - Present</span>
+                </div>
+                <div class="item-subtitle"><a href="https://singularitybd.com/" class="resume-link">Singularity Limited</a> | Dhaka, Bangladesh</div>
+                <ul>
+                    <li>Design and develop gameplay and UI systems for cross-platform titles including AR/VR/XR using C# and Unity Engine</li>
+                    <li>Collaborating with cross-functional teams to design, prototype, and deploy real-time 3D experiences</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="item-title">Unity Developer, QA Engineer</span>
+                    <span class="item-date">09/2021 - 01/2025</span>
+                </div>
+                <div class="item-subtitle"><a href="https://batterylowinteractive.com/" class="resume-link">Battery Low Interactive Limited</a> | Dhaka, Bangladesh</div>
+                <ul>
+                    <li>Design and develop gameplay and UI systems for cross-platform titles including AR/VR/XR using C# and Unity Engine</li>
+                    <li>Performed quality assurance testing and debugging for smooth user experience across platforms</li>
+                    <li>Transitioned to Unity Developer role in 2023, focusing on gameplay programming and performance optimization</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="item-title">Internet of Things Intern</span>
+                    <span class="item-date">09/2019 - 02/2020</span>
+                </div>
+                <div class="item-subtitle"><a href="https://www.datasoft-bd.com/" class="resume-link">DataSoft Systems Bangladesh Limited</a> | Dhaka, Bangladesh</div>
+                <ul>
+                    <li>Developed IoT enabled environmental monitoring device with dashboard</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Projects</h2>
+            
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://dettolwarriors.wskoly.xyz/" class="resume-link">Dettol Warriors - Web Action Game</a></span>
+                    <span class="item-date">12/2025 - Present</span>
+                </div>
+                <ul>
+                    <li>Gameplay & UI programming</li>
+                    <li>Lighting & Rendering</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://www.youtube.com/watch?v=MpPcCIJkK2g" class="resume-link">Combined Harvester Operator Training Simulator</a></span>
+                    <span class="item-date">08/2023 - 11/2024</span>
+                </div>
+                <ul>
+                    <li>Gameplay & UI programming</li>
+                    <li>Hardware & API Integration</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://play.google.com/store/apps/details?id=com.QuantumGamesStudio.GuessTheFlag" class="resume-link">Guess The Flag - Android Casual Educational Game</a></span>
+                    <span class="item-date">08/2024 - 10/2025</span>
+                </div>
+                <ul>
+                    <li>Gameplay & UI programming</li>
+                    <li>Game Design & Play console publishing</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://drive.google.com/drive/folders/1vcnyCF5BOXCfaBduserJLpa67VK5kWKX" class="resume-link">VR Microverse - Survival Shooter Game</a></span>
+                    <span class="item-date">10/2025 - 12/2025</span>
+                </div>
+                <ul>
+                    <li>Gameplay Programming</li>
+                    <li>Lighting & Rendering</li>
+                    <li>Oculus Integration</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://www.linkedin.com/posts/iam-shanto_augmentedreality-iot-innovation-activity-7398746298453110785-Wez6/?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAC2W73MBYWTtwPN3kFEW9883hPh6eaa4cz8" class="resume-link">HMO Lab - Child Body Scanning AR App</a></span>
+                    <span class="item-date">10/2025 - 12/2025</span>
+                </div>
+                <ul>
+                    <li>AR Programming</li>
+                    <li>Vuforia SDK Integration</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://www.linkedin.com/posts/iam-shanto_unity-pythonbackend-arphotobooth-activity-7358418545669525504-t17b/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC2W73MBYWTtwPN3kFEW9883hPh6eaa4cz8" class="resume-link">VISA Bangladesh ARPhotobooth</a></span>
+                    <span class="item-date">07/2025 - 08/2025</span>
+                </div>
+                <ul>
+                    <li>AR programming with QR Code generation</li>
+                    <li>Server Communication</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://penalty-shoot.netlify.app/" class="resume-link">Penalty Shootout - Web Sports Game</a></span>
+                    <span class="item-date">07/2025 - 08/2025</span>
+                </div>
+                <ul>
+                    <li>Gameplay & UI programming</li>
+                    <li>Level design</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://tmv-carchase.wskoly.xyz/" class="resume-link">TMV Car Chase - Casual Web Finite Runner Game</a></span>
+                    <span class="item-date">02/2025 - 03/2025</span>
+                </div>
+                <ul>
+                    <li>Gameplay & UI programming</li>
+                    <li>Addressables & Leaderboard API Integration</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://therap-arventure.wskoly.xyz/" class="resume-link">ARVenture - AR Scavanger Hunt Game</a></span>
+                    <span class="item-date">01/2025 - 02/2025</span>
+                </div>
+                <ul>
+                    <li>Web AR & UI programming</li>
+                    <li>API integration</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://sleepypenguinstudios.com/chashi-nobanno/" class="resume-link">Chashi Nobanno - Web Traditional Sports Game</a></span>
+                    <span class="item-date">11/2024 - 12/2024</span>
+                </div>
+                <ul>
+                    <li>Gameplay & UI programming</li>
+                    <li>Level design</li>
+                </ul>
+            </div>
+
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="project-title"><a href="https://iamshanto.itch.io/treasure-island" class="resume-link">Treasure Island - Windows Role-playing Game</a></span>
+                    <span class="item-date">09/2021 - 12/2022</span>
+                </div>
+                <ul>
+                    <li>Gameplay & UI programming</li>
+                    <li>Level Design</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Education</h2>
+            
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="item-title">BSc in Computer Science and Engineering</span>
+                    <span class="item-date">10/2016 - 07/2021</span>
+                </div>
+                <div class="item-subtitle"><a href="#" class="resume-link">University of Asia Pacific</a> | Dhaka, Bangladesh</div>
+            </div>
+            
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="item-title">Higher Secondary Certificate (Science)</span>
+                    <span class="item-date">01/2012 - 12/2014</span>
+                </div>
+                <div class="item-subtitle"><a href="#" class="resume-link">Ghatail Cantonment College</a> | Ghatail, Tangail</div>
+            </div>
+            
+            <div class="item-block">
+                <div class="item-header">
+                    <span class="item-title">Secondary School Certificate (Science)</span>
+                    <span class="item-date">01/2010 - 05/2012</span>
+                </div>
+                <div class="item-subtitle"><a href="#" class="resume-link">Kadamtali Hasan Public High School</a> | Ghatail, Tangail</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Awards</h2>
+            <ul>
+                <li><strong>Document Authentication Category Award</strong> - International Blockchain Olympiad 2021</li>
+                <li><strong>UAP CSE Hackathon Champion Award</strong> - University of Asia Pacific (2020)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Certificates</h2>
+            <ul>
+                <li><strong>Lighting in Unity</strong>: Online course covering techniques and tools for effective lighting in Unity by Udemy - 2020</li>
+                <li><strong>Blockchain Specialization</strong>: Specialization involved in blockchain technology including its applications and implications by Coursera - 2020</li>
+                <li><strong>Intro to Data Science in Python</strong>: Course on data science including programming in Python by Coursera - 2020</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>References</h2>
+            <div style="font-size: 13.5px; line-height: 1.6; color: #333;">
+                <p style="margin-bottom: 10px;">
+                    <strong>Ishtiaque Ahmed</strong>, Co-Founder & COO, <a href="#" class="resume-link">Battery Low Interactive Limited</a><br>
+                    istiaque.batterylowinteractive@gmail.com, +8801675266527
+                </p>
+                <p style="margin-bottom: 0;">
+                    <strong>Md. Masum Talukder</strong>, Lead Software Engineer, <a href="#" class="resume-link">Appinion BD Ltd.</a><br>
+                    masum.talukder@appinionbdltd.com, +8801635508352
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
